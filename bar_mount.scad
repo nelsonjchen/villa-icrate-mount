@@ -10,8 +10,11 @@ bolt_diameter = 4.4; // M4 clearance
 cable_hole_diameter = 25; // Hole for camera pigtail
 
 // Cutout Adjustment
-svg_offset_x = 0;
+svg_offset_x = 40;
 svg_offset_y = 0;
+svg_scale_x = -1;
+svg_scale_y = 1;
+svg_rotation = 0;
 
 $fn = 60;
 
@@ -31,25 +34,15 @@ module bar_mount() {
       // Re-reading: "extend the plate".
       // Let's do a centered "V" point? No, that's equilateral usually.
       // Let's do a Right Triangle extension on the Left side (matches "L" bracket shape concept).
-      // 4. Triangular Extension (Planar) with SVG Cutout
+      // 4. SVG Extension
       // Extends downwards from the plate
       translate([-plate_size / 2, 0, -plate_size / 2])
         rotate([-90, 0, 0]) // Rotate to be in XZ plane (extruded along Y)
           linear_extrude(plate_thickness) // Extrude to thickness
-            difference() {
-              polygon(
-                [
-                  [0, 0], // Top Left
-                  [plate_size, 0], // Top Right
-                  [0, plate_size], // Bottom Left (Vertical drop)
-                ]
-              );
-
-              // SVG Cutout
-              // Adjust these values to position the cutout correctly
-              #translate([svg_offset_x, svg_offset_y])
-                import("drawing.svg");
-            }
+            translate([svg_offset_x, svg_offset_y])
+              rotate([0, 0, svg_rotation])
+                scale([svg_scale_x, svg_scale_y])
+                  import("drawing.svg");
     }
 
     // 2. Bolt Holes (Through Y-axis)
