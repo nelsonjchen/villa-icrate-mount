@@ -7,6 +7,7 @@ plate_thickness = 5; // Thickness
 
 bolt_spacing = 52; // Distance between bolt holes (Square pattern)
 bolt_diameter = 4.4; // M4 clearance
+cable_hole_diameter = 25; // Hole for camera pigtail
 
 $fn = 60;
 
@@ -26,6 +27,11 @@ module bar_mount() {
             cylinder(h=plate_thickness + 2, d=bolt_diameter);
       }
     }
+
+    // 3. Central Cable Pass-through Hole
+    translate([0, plate_thickness + 1, 0])
+      rotate([90, 0, 0])
+        cylinder(h=plate_thickness + 2, d=cable_hole_diameter);
   }
 }
 
@@ -41,4 +47,8 @@ color("lightgreen") bar_mount();
           color("red") cylinder(h=plate_thickness * 3, d=2, center=true);
     }
   }
+
+  // Cable Hole Visual
+  rotate([90, 0, 0])
+    color("blue", 0.5) cylinder(h=plate_thickness * 3, d=cable_hole_diameter, center=true);
 }
