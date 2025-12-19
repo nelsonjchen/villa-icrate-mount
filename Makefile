@@ -1,14 +1,20 @@
 # Makefile for clamp
 
-SCAD_FILES = clamp.scad cover.scad bar_mount.scad
+SCAD_FILES = bar_mount.scad
 OUTPUTS = $(SCAD_FILES:.scad=.stl)
+PNG_OUTPUTS = $(SCAD_FILES:.scad=.png)
 
 all: $(OUTPUTS)
+
+images: $(PNG_OUTPUTS)
 
 %.stl: %.scad
 	openscad -o $@ $<
 
-clean:
-	rm -f $(OUTPUTS)
+%.png: %.scad
+	openscad -o $@ --imgsize=1024,1024 --projection=perspective --camera=0,0,0,60,0,25,500 $<
 
-.PHONY: all clean
+clean:
+	rm -f $(OUTPUTS) $(PNG_OUTPUTS)
+
+.PHONY: all clean images
