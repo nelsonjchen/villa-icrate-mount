@@ -55,7 +55,7 @@
      inkscape:groupmode="layer"
      id="layer1">
     <path
-       style="fill:none;stroke-width:0.264583;stroke:#000000;stroke-opacity:1"
+       style="fill:none;stroke-width:2;stroke:#000000;stroke-opacity:1;stroke-dasharray:none"
        d="M 44.988154,-0.95719475 44.030958,14.038856 39.56405,21.855947 36.692466,32.863686 34.29948,44.828621 27.599115,54.081502 22.653609,74.820723 17.229506,89.178645 7.976623,99.229189 6.8598956,100.98405"
        id="path1" />
   </g>

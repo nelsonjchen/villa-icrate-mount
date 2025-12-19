@@ -15,6 +15,7 @@ svg_offset_y = 0;
 svg_scale_x = -1;
 svg_scale_y = 1;
 svg_rotation = 0;
+svg_thickness = plate_thickness; // Default to match plate
 
 $fn = 60;
 
@@ -38,7 +39,7 @@ module bar_mount() {
       // Extends downwards from the plate
       translate([-plate_size / 2, 0, -plate_size / 2])
         rotate([-90, 0, 0]) // Rotate to be in XZ plane (extruded along Y)
-          linear_extrude(plate_thickness) // Extrude to thickness
+          linear_extrude(svg_thickness) // Extrude to thickness
             translate([svg_offset_x, svg_offset_y])
               rotate([0, 0, svg_rotation])
                 scale([svg_scale_x, svg_scale_y])
