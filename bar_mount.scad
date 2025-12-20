@@ -43,11 +43,21 @@ module bar_mount() {
             translate([svg_offset_x, svg_offset_y])
               rotate([0, 0, svg_rotation])
                 scale([svg_scale_x, svg_scale_y])
-                  union() {
-                    import("drawing.svg");
-                    // Reinforcement Square to connect to main body
-                    translate([-5, -10]) square([45, 10]);
-                  }
+                  import("drawing.svg");
+
+      // 4a. Reinforcement Cube (Global Coordinates)
+      // Calculated: translate([-45, 0, -45])
+      // Spans X: -45 to 0. Z: -45 to -35. Matches bottom-left of plate zone.
+      translate([-45, 0, -45])
+        cube([45, svg_thickness, 10]);
+
+      // 4b. Wedge Triangle (Global Coordinates)
+      // Calculated: translate([0, 0, -45])
+      // Rotated and Polygon adjusted to match original relative "wedge"
+      translate([0, 0, -45])
+        rotate([-90, 0, 0])
+          linear_extrude(svg_thickness)
+            polygon([[-60, 65], [-50, 55], [-60, 45]]);
     }
 
     // 2. Bolt Holes (Through Y-axis)
