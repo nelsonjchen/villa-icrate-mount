@@ -3,7 +3,7 @@
 
 // --- Dimensions ---
 plate_size = 90; // Width and Height (Square) / Diameter (Round)
-plate_thickness = 10; // Thickness
+plate_thickness = 5; // Thickness
 reinforcement_thickness = 30; // Thickness of bottom parts (reinforcement + SVG)
 bolt_spacing = 52; // Distance between bolt holes (Square pattern)
 bolt_diameter = 4.4; // M4 clearance
@@ -49,7 +49,7 @@ module bar_mount() {
       // Calculated: translate([-45, 0, -45])
       // Spans X: -45 to 0. Z: -45 to -35. Matches bottom-left of plate zone.
       translate([-45, plate_thickness - svg_thickness, -45])
-        cube([45, svg_thickness, 10]);
+        cube([45, svg_thickness, 5]);
 
       // 4b. Wedge Triangle (Global Coordinates)
       // Calculated: translate([0, 0, -45])
