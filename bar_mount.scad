@@ -18,7 +18,7 @@ svg_scale_y = 1;
 svg_rotation = 0;
 svg_thickness = reinforcement_thickness; // Alias for backward compatibility if needed, or just use reinforcement_thickness below
 
-$fn = 60;
+$fn = 240;
 
 module bar_mount() {
   difference() {
