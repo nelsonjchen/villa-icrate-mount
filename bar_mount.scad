@@ -54,10 +54,10 @@ module bar_mount() {
       // 4b. Wedge Triangle (Global Coordinates)
       // Calculated: translate([0, 0, -45])
       // Rotated and Polygon adjusted to match original relative "wedge"
-      translate([0, 0, -45])
+      translate([-45, 0, -45])
         rotate([-90, 0, 0])
           linear_extrude(svg_thickness)
-            polygon([[-60, 65], [-50, 55], [-60, 45]]);
+            polygon([[0, 0], [10, 0], [0, 10]]);
     }
 
     // 2. Bolt Holes (Through Y-axis)
