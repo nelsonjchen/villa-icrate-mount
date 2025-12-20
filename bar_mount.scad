@@ -46,15 +46,15 @@ module bar_mount() {
                   import("drawing.svg");
 
       // 4a. Reinforcement Cube (Global Coordinates)
-      // Calculated: translate([-45, 0, -45])
-      // Spans X: -45 to 0. Z: -45 to -35. Matches bottom-left of plate zone.
-      translate([-45, plate_thickness - svg_thickness, -45])
-        cube([45, svg_thickness, 5]);
+      // Calculated: translate([-plate_size / 2, 0, -plate_size / 2])
+      // Spans X: -plate_size / 2 to 0. Z: -plate_size / 2 to -plate_size / 2 + 10. Matches bottom-left of plate zone.
+      translate([-plate_size / 2, plate_thickness - svg_thickness, -plate_size / 2])
+        cube([plate_size / 2, svg_thickness, 5]);
 
       // 4b. Wedge Triangle (Global Coordinates)
-      // Calculated: translate([0, 0, -45])
+      // Calculated: translate([0, 0, -plate_size / 2])
       // Rotated and Polygon adjusted to match original relative "wedge"
-      translate([-45, plate_thickness - svg_thickness, -45])
+      translate([-plate_size / 2, plate_thickness - svg_thickness, -plate_size / 2])
         rotate([-90, 0, 0])
           linear_extrude(svg_thickness)
             polygon([[0, 0], [10, 0], [0, 10]]);
