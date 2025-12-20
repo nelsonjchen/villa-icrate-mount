@@ -61,6 +61,14 @@ module bar_mount() {
         rotate([90, 0, 0])
           linear_extrude(plate_thickness)
             polygon([[0, 0], [triangle_size, 0], [0, triangle_size]]);
+      
+      // 4c. Wedge Triangle (Global Coordinates)
+      // Calculated: translate([0, 0, -plate_size / 2])
+      // Rotated and Polygon adjusted to match original relative "wedge"
+      translate([-plate_size / 2, plate_thickness, -plate_size / 2])
+        rotate([90, 90, 0])
+          linear_extrude(svg_thickness)
+            polygon([[0, 0], [10, 0], [0, 10]]);
 
       // 5. Reinforcement Ribs
       // Two ribs connecting the back of the plate to the extension
