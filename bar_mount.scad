@@ -6,6 +6,8 @@ plate_size = 120; // Width and Height (Square) / Diameter (Round)
 plate_thickness = 5; // Thickness
 reinforcement_thickness = 30; // Thickness of bottom parts (reinforcement + SVG)
 triangle_size = plate_size / 2; // Size of the 45-45-90 triangle legs
+rib_thickness = 4; // Thickness of the reinforcement ribs
+rib_size = 30; // Size of the rib triangle legs
 bolt_spacing = 52; // Distance between bolt holes (Square pattern)
 bolt_diameter = 4.4; // M4 clearance
 cable_hole_diameter = 25; // Hole for camera pigtail
@@ -59,6 +61,16 @@ module bar_mount() {
         rotate([90, 0, 0])
           linear_extrude(plate_thickness)
             polygon([[0, 0], [triangle_size, 0], [0, triangle_size]]);
+
+      // 5. Reinforcement Ribs
+      // Two ribs connecting the back of the plate to the extension
+      // Start at top of shelf (Z + 5) and go Up (Z+) and Back (Y-)
+      for (x_off = [4, 60]) {
+          translate([-plate_size/2 + x_off, plate_thickness, -plate_size/2 + 5])
+            rotate([0, -90, 0])
+             linear_extrude(rib_thickness)
+               polygon([[0, 0], [rib_size, 0], [0, -rib_size]]);
+      }
     }
 
     // 2. Bolt Holes (Through Y-axis)
