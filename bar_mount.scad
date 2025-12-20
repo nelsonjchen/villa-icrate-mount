@@ -4,7 +4,7 @@
 // --- Dimensions ---
 plate_size = 90; // Width and Height (Square) / Diameter (Round)
 plate_thickness = 10; // Thickness
-
+reinforcement_thickness = 30; // Thickness of bottom parts (reinforcement + SVG)
 bolt_spacing = 52; // Distance between bolt holes (Square pattern)
 bolt_diameter = 4.4; // M4 clearance
 cable_hole_diameter = 25; // Hole for camera pigtail
@@ -15,7 +15,7 @@ svg_offset_y = 0;
 svg_scale_x = -1;
 svg_scale_y = 1;
 svg_rotation = 0;
-svg_thickness = plate_thickness; // Default to match plate
+svg_thickness = reinforcement_thickness; // Alias for backward compatibility if needed, or just use reinforcement_thickness below
 
 $fn = 60;
 
@@ -37,7 +37,7 @@ module bar_mount() {
       // Let's do a Right Triangle extension on the Left side (matches "L" bracket shape concept).
       // 4. SVG Extension
       // Extends downwards from the plate
-      translate([-plate_size / 2, 0, -plate_size / 2])
+      translate([-plate_size / 2, plate_thickness - svg_thickness, -plate_size / 2])
         rotate([-90, 0, 0]) // Rotate to be in XZ plane (extruded along Y)
           linear_extrude(svg_thickness) // Extrude to thickness
             translate([svg_offset_x, svg_offset_y])
@@ -48,13 +48,13 @@ module bar_mount() {
       // 4a. Reinforcement Cube (Global Coordinates)
       // Calculated: translate([-45, 0, -45])
       // Spans X: -45 to 0. Z: -45 to -35. Matches bottom-left of plate zone.
-      translate([-45, 0, -45])
+      translate([-45, plate_thickness - svg_thickness, -45])
         cube([45, svg_thickness, 10]);
 
       // 4b. Wedge Triangle (Global Coordinates)
       // Calculated: translate([0, 0, -45])
       // Rotated and Polygon adjusted to match original relative "wedge"
-      translate([-45, 0, -45])
+      translate([-45, plate_thickness - svg_thickness, -45])
         rotate([-90, 0, 0])
           linear_extrude(svg_thickness)
             polygon([[0, 0], [10, 0], [0, 10]]);
