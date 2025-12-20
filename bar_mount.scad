@@ -5,6 +5,7 @@
 plate_size = 120; // Width and Height (Square) / Diameter (Round)
 plate_thickness = 5; // Thickness
 reinforcement_thickness = 30; // Thickness of bottom parts (reinforcement + SVG)
+triangle_size = plate_size / 2; // Size of the 45-45-90 triangle legs
 bolt_spacing = 52; // Distance between bolt holes (Square pattern)
 bolt_diameter = 4.4; // M4 clearance
 cable_hole_diameter = 25; // Hole for camera pigtail
@@ -54,10 +55,10 @@ module bar_mount() {
       // 4b. Wedge Triangle (Global Coordinates)
       // Calculated: translate([0, 0, -plate_size / 2])
       // Rotated and Polygon adjusted to match original relative "wedge"
-      translate([-plate_size / 2, plate_thickness - svg_thickness, -plate_size / 2])
-        rotate([-90, 0, 0])
-          linear_extrude(svg_thickness)
-            polygon([[0, 0], [10, 0], [0, 10]]);
+      translate([-plate_size / 2, plate_thickness, -plate_size / 2])
+        rotate([90, 0, 0])
+          linear_extrude(plate_thickness)
+            polygon([[0, 0], [triangle_size, 0], [0, triangle_size]]);
     }
 
     // 2. Bolt Holes (Through Y-axis)
