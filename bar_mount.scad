@@ -2,7 +2,7 @@
 // Simple upright square plate for mounting camera.
 
 // --- Dimensions ---
-plate_size = 90; // Width and Height (Square) / Diameter (Round)
+plate_size = 120; // Width and Height (Square) / Diameter (Round)
 plate_thickness = 5; // Thickness
 reinforcement_thickness = 30; // Thickness of bottom parts (reinforcement + SVG)
 bolt_spacing = 52; // Distance between bolt holes (Square pattern)
