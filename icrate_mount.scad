@@ -32,20 +32,30 @@ module cage_mock() {
   }
 }
 
+module trapezoid_profile(w_top, w_bottom, h) {
+  polygon(
+    [
+      [-w_top / 2, 0],
+      [w_top / 2, 0],
+      [w_bottom / 2, -h],
+      [-w_bottom / 2, -h],
+    ]
+  );
+}
+
 module icrate_mount() {
   // ONLY THE MOUNT IS ROTATED TO ALIGN WITH THE XZ PLANE
   rotate([0, 0, 0])
     linear_extrude(thickness, center=true) {
       difference() {
-        // Main Trapezoid Profile
-        polygon(
-          [
-            [-spread / 2, 0],
-            [spread / 2, 0],
-            [bottom_width / 2, -height],
-            [-bottom_width / 2, -height],
-          ]
-        );
+        // Main Body
+        trapezoid_profile(spread, bottom_width, height);
+
+        // --- ADJUST THE TRANSLATION BELOW TO MOVE THE CUTOUT ---
+        // Setting this to [0, 0] will cut the whole trapezoid away.
+        // The angles will always be identical because we use the same profile.
+        translate([0, 10])
+          trapezoid_profile(spread, bottom_width, height);
 
         // Wire Hook Cutouts
         translate([-spread / 2, 0]) circle(d=wire_diameter);
