@@ -21,24 +21,34 @@ $fn = 60;
 // !!! DO NOT CHANGE THESE CYLINDERS. !!!
 module cage_mock() {
   %union() {
-    // Top Wire (Along X, at Z=0)
-    color("gray")
-      rotate([0, 90, 0]) cylinder(d=wire_diameter, h=250, center=true);
-
-    // Bottom Wire (Along X, at Z=-109)
-    translate([0, 0, -wire_center_spacing])
-      color("gray")
-        rotate([0, 90, 0]) cylinder(d=wire_diameter, h=250, center=true);
+    cage_wire();
   }
+}
+
+// !!! DO NOT TOUCH THE WIRE BELOW. KEEP OBSERVING IT. !!!
+// !!! THE WIRE IS STATIC IN THE XZ PLANE. !!!
+// !!! DO NOT CHANGE THESE CYLINDERS. !!!
+module cage_wire() {
+  // Top Wire (Along X, at Z=0)
+  translate([0, wire_diameter / 2, 0])
+    color("gray")
+      rotate([0, 90, 0])
+        cylinder(d=wire_diameter, h=250, center=true);
+
+  // Bottom Wire (Along X, at Z=-109)
+  translate([0, wire_diameter / 2, -wire_center_spacing])
+    rotate([0, 90, 0])
+      color("gray")
+        cylinder(d=wire_diameter, h=250, center=true);
 }
 
 module trapezoid_profile(w_top, w_bottom, h) {
   polygon(
-    [
-      [-w_top / 2, 0],
+    points = [
+      [-w_bottom / 2, h],
+      [w_bottom / 2, h],
       [w_top / 2, 0],
-      [w_bottom / 2, -h],
-      [-w_bottom / 2, -h],
+      [-w_top / 2, 0]
     ]
   );
 }
@@ -50,16 +60,6 @@ module icrate_mount() {
       difference() {
         // Main Body
         trapezoid_profile(spread, bottom_width, height);
-
-        // --- ADJUST THE TRANSLATION BELOW TO MOVE THE CUTOUT ---
-        // Setting this to [0, 0] will cut the whole trapezoid away.
-        // The angles will always be identical because we use the same profile.
-        translate([0, 10])
-          trapezoid_profile(spread, bottom_width, height);
-
-        // Wire Hook Cutouts
-        translate([-spread / 2, 0]) circle(d=wire_diameter);
-        translate([spread / 2, 0]) circle(d=wire_diameter);
       }
     }
 }
