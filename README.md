@@ -1,6 +1,6 @@
-# Villa Bar Mount
+# Villa iCrate Mount
 
-I want to mount a ReoLink NVC-D12M camera to a bar's upper surface.
+I want to mount a ReoLink NVC-D12M camera to an iCrate's cages to monitor the dogs closely.
 
 Note grabbag:
 

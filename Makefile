@@ -1,6 +1,6 @@
-# Makefile for clamp
+# Makefile for iCrate mounts
 
-SCAD_FILES = bar_mount.scad
+SCAD_FILES = icrate_mount.scad bar_mount.scad
 OUTPUTS = $(SCAD_FILES:.scad=.stl)
 PNG_OUTPUTS = $(SCAD_FILES:.scad=.png)
 
