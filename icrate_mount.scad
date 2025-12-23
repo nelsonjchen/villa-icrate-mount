@@ -109,8 +109,9 @@ module icrate_mount() {
 
   difference() {
     down(4)
-      cuboid([mount_width, arm_length, 8], anchor=BOTTOM + FRONT, rounding=2);
+      cuboid([mount_width, arm_length, 8], anchor=BOTTOM + FRONT, rounding=2) down(4) right(-2.5) rotate([180, 0, 90]) text3d("PLA", h=1, anchor=LEFT, size=5);
 
+    
     hull() {
       back(horiz_wire_y)
         horiz_wire();
