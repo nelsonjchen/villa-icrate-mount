@@ -1,3 +1,5 @@
+// 
+
 // --- iCrate Mount: Flat Planar Hanger ---
 // Orientation:
 // X = Horizontal (along the wire)
@@ -25,6 +27,31 @@ module cage_mock() {
   }
 }
 
+module camera_sim(total_h = 103, dia = 117) {
+
+  // Calculate cylinder length
+  cyl_h = total_h - (dia / 2);
+
+  // Rotate so it hangs down like a ceiling mount (Dome at bottom)
+  rotate([180, 0, 0])
+    intersection() {
+      union() {
+        // 1. The Cylinder Body
+        cylinder(d=dia, h=cyl_h);
+
+        // 2. The Dome (Centered at 0, sticking down)
+        sphere(d=dia);
+      }
+
+      // 3. The "Chopper" 
+      // A big box that allows the bottom dome to exist 
+      // but cuts off anything sticking out the back (top).
+      // It goes from -Radius (bottom of dome) to Cylinder Height.
+      translate([0, 0, -dia])
+        cylinder(d=dia, h=dia + cyl_h);
+    }
+}
+
 // !!! DO NOT TOUCH THE WIRE BELOW. KEEP OBSERVING IT. !!!
 // !!! THE WIRE IS STATIC IN THE XZ PLANE. !!!
 // !!! DO NOT CHANGE THESE CYLINDERS. !!!
@@ -44,24 +71,29 @@ module cage_wire() {
 
 module trapezoid_profile(w_top, w_bottom, h) {
   polygon(
-    points = [
+    points=[
       [-w_bottom / 2, h],
       [w_bottom / 2, h],
       [w_top / 2, 0],
-      [-w_top / 2, 0]
+      [-w_top / 2, 0],
     ]
   );
 }
 
 module icrate_mount() {
   // ONLY THE MOUNT IS ROTATED TO ALIGN WITH THE XZ PLANE
-  rotate([0, 0, 0])
-    linear_extrude(thickness, center=true) {
-      difference() {
-        // Main Body
+  difference() {
+    rotate([0, 0, 0])
+      linear_extrude(thickness, center=true) {
         trapezoid_profile(spread, bottom_width, height);
       }
-    }
+
+    // Cut out an wire extruded down 8mm
+    translate([0, 0, 0])
+      linear_extrude(8, center=true) {
+        cage_wire();
+      }
+  }
 }
 
 // --- Render ---
