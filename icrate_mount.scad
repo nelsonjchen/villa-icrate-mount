@@ -137,7 +137,7 @@ icrate_mount();
 
 // Camera Simulator for clearance check
 camera_cyl_h = 104 - 120 / 2; // 44
-#translate([0, arm_length - 2 - camera_cyl_h, -bolt_height])
+%translate([0, arm_length - 2 - camera_cyl_h, -bolt_height])
 
   rotate([90, 0, 0])
     camera_sim();
