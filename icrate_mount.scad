@@ -67,11 +67,9 @@ module cage_wires() {
   back(wire_diameter / 2 + 2)
 
     cage_wire();
-
-  // Bottom Wire (Along X, at Z=-109)
-  back(wire_diameter / 2 + 2)
-
-    cage_wire();
+  // Wire in front, also 4mm, just crossing
+  back(wire_diameter + wire_diameter)
+    cylinder(d=wire_diameter, h=250, center=true);
 }
 
 module icrate_mount() {
@@ -80,7 +78,7 @@ module icrate_mount() {
   difference() {
     rotate([0, 0, 0])
       linear_extrude(thickness, center=true)
-        trapezoid(h=113, w1=120, w2=120, anchor=FRONT, rounding=2);
+        trapezoid(h=113, w1=10, w2=10, anchor=FRONT, rounding=2);
 
     hull() {
       back(wire_diameter / 2 + 2)
@@ -88,6 +86,13 @@ module icrate_mount() {
       back(wire_diameter / 2 + 2)
         down(10)
           cage_wire();
+    }
+
+    hull() {
+      back(wire_diameter + wire_diameter)
+        cylinder(d=wire_diameter, h=250, center=true);
+      fwd(wire_diameter + wire_diameter)
+        cylinder(d=wire_diameter, h=250, center=true);
     }
   }
 }
