@@ -18,12 +18,13 @@ height = 60; // How far it hangs down (along Z)
 bottom_width = 40; // Width of the bottom edge
 bolt_spacing = 52; // Distance between bolt holes
 bolt_diameter = 4.4; // M4 clearance
+bolt_height = 70; // Vertical distance from top wire to center of bolts
 
 // --- Parameterized Dimensions ---
 arm_length = 125;
 mount_width = 10;
 strip_margin = 10;
-mount_height = (52.5 + bolt_spacing / 2 + strip_margin) + 4; // Top of arm is at Z=4
+mount_height = (bolt_height + bolt_spacing / 2 + strip_margin) + 4; // Top of arm is at Z=4
 
 // --- Wire Constants ---
 horiz_wire_y = wire_diameter / 2 + 2;
@@ -99,7 +100,8 @@ module icrate_mount() {
 
     // Cut out two holes for bolts
     for (z_dir = [-1, 1]) {
-      translate([0, arm_length - 2, -52.5 + z_dir * bolt_spacing / 2])
+      translate([0, arm_length - 2, -bolt_height + z_dir * bolt_spacing / 2])
+
         rotate([90, 0, 0])
           cylinder(h=thickness + 2, d=bolt_diameter, center=true);
     }
@@ -135,6 +137,7 @@ icrate_mount();
 
 // Camera Simulator for clearance check
 camera_cyl_h = 104 - 120 / 2; // 44
-#translate([0, arm_length - 2 - camera_cyl_h, -52.5])
+#translate([0, arm_length - 2 - camera_cyl_h, -bolt_height])
+
   rotate([90, 0, 0])
     camera_sim();
