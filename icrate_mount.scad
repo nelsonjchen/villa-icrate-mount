@@ -1,3 +1,4 @@
+include <BOSL2/std.scad>
 // 
 
 // --- iCrate Mount: Flat Planar Hanger ---
@@ -69,24 +70,12 @@ module cage_wire() {
         cylinder(d=wire_diameter, h=250, center=true);
 }
 
-module trapezoid_profile(w_top, w_bottom, h) {
-  polygon(
-    points=[
-      [-w_bottom / 2, h],
-      [w_bottom / 2, h],
-      [w_top / 2, 0],
-      [-w_top / 2, 0],
-    ]
-  );
-}
-
 module icrate_mount() {
   // ONLY THE MOUNT IS ROTATED TO ALIGN WITH THE XZ PLANE
   difference() {
     rotate([0, 0, 0])
-      linear_extrude(thickness, center=true) {
-        trapezoid_profile(spread, bottom_width, height);
-      }
+      linear_extrude(thickness, center=true)
+        trapezoid(h=height, w1=spread, w2=bottom_width, anchor=FRONT);
 
     // Cut out an wire extruded down 8mm
     translate([0, 0, 0])
