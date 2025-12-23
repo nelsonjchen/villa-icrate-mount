@@ -108,10 +108,14 @@ module icrate_mount() {
   }
 
   difference() {
-    down(4)
-      cuboid([mount_width, arm_length, 8], anchor=BOTTOM + FRONT, rounding=2) down(4) right(-2.5) rotate([180, 0, 90]) text3d("PLA", h=1, anchor=LEFT, size=5);
+    union() {
+      down(4)
+        cuboid([mount_width, arm_length, 8], anchor=BOTTOM + FRONT, rounding=2) down(4) right(-2.5) rotate([180, 0, 90]) text3d("PLA", h=1, anchor=LEFT, size=5);
+      back(4)
+        down(20)
+          cuboid([8, 8, 20], anchor=BOTTOM + FRONT, rounding=2) down(4) left(-2.5) rotate([180, 0, 90]);
+    }
 
-    
     hull() {
       back(horiz_wire_y)
         horiz_wire();
