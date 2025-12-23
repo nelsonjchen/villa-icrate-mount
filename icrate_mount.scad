@@ -16,6 +16,8 @@ thickness = 5;
 spread = 120; // Distance between hooks
 height = 60; // How far it hangs down (along Z)
 bottom_width = 40; // Width of the bottom edge
+bolt_spacing = 52; // Distance between bolt holes
+bolt_diameter = 4.4; // M4 clearance
 
 // --- Wire Constants ---
 horiz_wire_y = wire_diameter / 2 + 2;
@@ -82,11 +84,24 @@ module cage_wires() {
 }
 
 module icrate_mount() {
-  // ONLY THE MOUNT IS ROTATED TO ALIGN WITH THE XZ PLANE
+
+  // Part with mount
+  difference() {
+    down(113 - 8 / 2)
+      back(113 - 2 - thickness / 2)
+        cuboid([10, thickness, 113], anchor=BOTTOM + FRONT, rounding=2);
+
+    // Cut out two holes for bolts
+    for (z_dir = [-1, 1]) {
+      translate([0, 111, -52.5 + z_dir * bolt_spacing / 2])
+        rotate([90, 0, 0])
+          cylinder(h=thickness + 2, d=bolt_diameter, center=true);
+    }
+  }
 
   difference() {
     down(4)
-      cuboid([10, 113, 8], anchor=BOTTOM+FRONT, rounding=2) show_anchors();
+      cuboid([10, 113, 8], anchor=BOTTOM + FRONT, rounding=2);
 
     hull() {
       back(horiz_wire_y)
