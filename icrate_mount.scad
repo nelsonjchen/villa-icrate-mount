@@ -17,6 +17,10 @@ spread = 120; // Distance between hooks
 height = 60; // How far it hangs down (along Z)
 bottom_width = 40; // Width of the bottom edge
 
+// --- Wire Constants ---
+horiz_wire_y = wire_diameter / 2 + 2;
+vert_wire_y = wire_diameter * 2;
+
 $fn = 60;
 
 // !!! DO NOT TOUCH THE MOCK BELOW. KEEP OBSERVING IT. !!!
@@ -56,43 +60,47 @@ module camera_sim(total_h = 103, dia = 117) {
 // !!! DO NOT TOUCH THE WIRE BELOW. KEEP OBSERVING IT. !!!
 // !!! THE WIRE IS STATIC IN THE XZ PLANE. !!!
 // !!! DO NOT CHANGE THESE CYLINDERS. !!!
-module cage_wire() {
+module horiz_wire() {
   color("gray")
     rotate([0, 90, 0])
       cylinder(d=wire_diameter, h=250, center=true);
 }
 
+module vert_wire() {
+  color("gray")
+    cylinder(d=wire_diameter, h=250, center=true);
+}
+
 module cage_wires() {
   // Top Wire (Along X, at Z=0)
-  back(wire_diameter / 2 + 2)
+  back(horiz_wire_y)
+    horiz_wire();
 
-    cage_wire();
   // Wire in front, also 4mm, just crossing
-  back(wire_diameter + wire_diameter)
-    cylinder(d=wire_diameter, h=250, center=true);
+  back(vert_wire_y)
+    vert_wire();
 }
 
 module icrate_mount() {
   // ONLY THE MOUNT IS ROTATED TO ALIGN WITH THE XZ PLANE
 
   difference() {
-    rotate([0, 0, 0])
-      linear_extrude(thickness, center=true)
-        trapezoid(h=113, w1=10, w2=10, anchor=FRONT, rounding=2);
+    down(4)
+      cuboid([10, 113, 8], anchor=BOTTOM+FRONT, rounding=2) show_anchors();
 
     hull() {
-      back(wire_diameter / 2 + 2)
-        cage_wire();
-      back(wire_diameter / 2 + 2)
+      back(horiz_wire_y)
+        horiz_wire();
+      back(horiz_wire_y)
         down(10)
-          cage_wire();
+          horiz_wire();
     }
 
     hull() {
-      back(wire_diameter + wire_diameter)
-        cylinder(d=wire_diameter, h=250, center=true);
-      fwd(wire_diameter + wire_diameter)
-        cylinder(d=wire_diameter, h=250, center=true);
+      back(vert_wire_y)
+        vert_wire();
+      fwd(vert_wire_y)
+        vert_wire();
     }
   }
 }
