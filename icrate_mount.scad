@@ -143,10 +143,16 @@ module gusset() {
       wedge([mount_width, 15, 15], anchor=FRONT + BOTTOM);
 }
 
+module hook_feature() {
+  translate([0, 8, -10])
+    cuboid([8, 8, 20], anchor=CENTER, rounding=2);
+}
+
 module mount_body() {
   vertical_mount_plate();
   horizontal_arm_bar();
   gusset();
+  hook_feature();
 
   // Text "PETG"
   // Original: translate([mount_width / 2, arm_length - 2, -bolt_height])
@@ -169,12 +175,6 @@ module icrate_mount() {
         rotate([90, 0, 0])
           cylinder(h=thickness + 10, d=bolt_diameter, center=true);
     }
-
-    // Hook/Clip cutout at the bottom?
-    // Original: back(4) down(20) cuboid([8, 8, 20]...
-    back(4)
-      down(20)
-        cuboid([8, 8, 20], anchor=BOTTOM + FRONT, rounding=2) down(4) left(-2.5) rotate([180, 0, 90]);
   }
 }
 

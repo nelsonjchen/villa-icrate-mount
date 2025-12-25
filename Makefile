@@ -1,6 +1,6 @@
 # Makefile for iCrate mounts
 
-SCAD_FILES = icrate_mount.scad bar_mount.scad
+SCAD_FILES = icrate_mount.scad
 OUTPUTS = $(SCAD_FILES:.scad=.stl)
 PNG_OUTPUTS = $(SCAD_FILES:.scad=.png)
 
