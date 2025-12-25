@@ -9,3 +9,4 @@ Note grabbag:
 * M4 screw size needed mounting.
 * The iCrate cage's wire diameter is 4mm
 * From edge of the wire to another wire vertically is 105mm
+* Temporary, so a crappy mount is fine.
