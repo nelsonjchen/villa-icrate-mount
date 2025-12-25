@@ -18,7 +18,7 @@ height = 60; // How far it hangs down (along Z)
 bottom_width = 40; // Width of the bottom edge
 bolt_spacing = 52; // Distance between bolt holes
 bolt_diameter = 4.4; // M4 clearance
-bolt_height = 70; // Vertical distance from top wire to center of bolts
+bolt_height = 80; // Vertical distance from top wire to center of bolts
 
 // --- Parameterized Dimensions ---
 arm_length = 125;
@@ -105,13 +105,26 @@ module icrate_mount() {
         rotate([90, 0, 0])
           cylinder(h=thickness + 2, d=bolt_diameter, center=true);
     }
+
+    // Text on the side of the vertical mount
+    translate([mount_width / 2, arm_length - 2, -bolt_height])
+      rotate([90, 90, 90])
+      fwd(4)
+        text3d("PETG", h=1, size=6, anchor=CENTER);
   }
+
+  // Real Gusset using prism/wedge
+  translate([0, arm_length - 2 - thickness / 2, -4])
+    up(2)
+    back(2)
+    rotate([180, 0, 0])
+      wedge([mount_width, 15, 15], anchor=FRONT + BOTTOM);
 
   difference() {
     union() {
       down(4)
         fwd(4)
-          cuboid([mount_width, arm_length + 4, 10], anchor=BOTTOM + FRONT, rounding=2) down(4) right(-2.5) rotate([180, 0, 90]) text3d("PETG", h=1, anchor=LEFT, size=5);
+          cuboid([mount_width, arm_length + 4, 10], anchor=BOTTOM + FRONT, rounding=2);
       back(4)
         down(20)
           cuboid([8, 8, 20], anchor=BOTTOM + FRONT, rounding=2) down(4) left(-2.5) rotate([180, 0, 90]);
