@@ -90,60 +90,91 @@ module cage_wires() {
     vert_wire();
 }
 
-module icrate_mount() {
+// --- Derived Dimensions ---
+hook_thickness = 4;
+wire_offset_y = horiz_wire_y;
 
-  // Part with mount
-  difference() {
-    down(mount_height - 6)
-      back(arm_length - 2 - thickness / 2)
-        cuboid([mount_width, thickness, mount_height], anchor=BOTTOM + FRONT, rounding=2);
-
-    // Cut out two holes for bolts
-    for (z_dir = [-1, 1]) {
-      translate([0, arm_length - 2, -bolt_height + z_dir * bolt_spacing / 2])
-
-        rotate([90, 0, 0])
-          cylinder(h=thickness + 2, d=bolt_diameter, center=true);
-    }
-
-    // Text on the side of the vertical mount
-    translate([mount_width / 2, arm_length - 2, -bolt_height])
-      rotate([90, 90, 90])
-      fwd(4)
-        text3d("PETG", h=1, size=6, anchor=CENTER);
+module wire_cutouts() {
+  hull() {
+    back(horiz_wire_y)
+      horiz_wire();
+    back(horiz_wire_y)
+      down(mount_height) // Ensure cut is deep enough
+        horiz_wire();
   }
 
-  // Real Gusset using prism/wedge
-  translate([0, arm_length - 2 - thickness / 2, -4])
-    up(2)
-    back(2)
+  hull() {
+    back(vert_wire_y)
+      vert_wire();
+    fwd(vert_wire_y)
+      vert_wire();
+  }
+}
+
+module vertical_mount_plate() {
+  // Calculated Center from original relative transforms:
+  // Z top was 6. Z center = 6 - mount_height/2.
+  // Y front was (arm_length - 2 - thickness/2). Y center = Y_front + thickness/2 = arm_length - 2.
+
+  translate([0, arm_length - 2, 6 - mount_height / 2])
+    cuboid([mount_width, thickness, mount_height], anchor=CENTER, rounding=2);
+}
+
+module horizontal_arm_bar() {
+  // Calculated Center from original relative transforms:
+  // Z bottom was -4. Height 10. Z center = -4 + 10/2 = 1.
+  // Y front was -4. Length arm_length+4. Y center = -4 + (arm_length+4)/2 = arm_length/2 - 2.
+
+  translate([0, arm_length / 2 - 2, 1])
+    cuboid([mount_width, arm_length + 4, 10], anchor=CENTER, rounding=2);
+}
+
+module gusset() {
+  // Preserving the user's "hax" adjustment exactly:
+  // Original Base: [0, arm_length - 2 - thickness/2, -4]
+  // Adjustment: up(2) back(2) -> [+0, +2, +2]
+  // Final Pos:
+  // X = 0
+  // Y = (arm_length - 2 - thickness/2) + 2 = arm_length - thickness/2
+  // Z = -4 + 2 = -2
+
+  translate([0, arm_length - thickness / 2, -2])
     rotate([180, 0, 0])
       wedge([mount_width, 15, 15], anchor=FRONT + BOTTOM);
+}
 
+module mount_body() {
+  vertical_mount_plate();
+  horizontal_arm_bar();
+  gusset();
+
+  // Text "PETG"
+  // Original: translate([mount_width / 2, arm_length - 2, -bolt_height])
+  translate([mount_width / 2, arm_length - 2, -bolt_height])
+    rotate([90, 90, 90])
+      fwd(4)
+        text3d("PETG", h=1, size=6, anchor=CENTER);
+}
+
+module icrate_mount() {
   difference() {
-    union() {
-      down(4)
-        fwd(4)
-          cuboid([mount_width, arm_length + 4, 10], anchor=BOTTOM + FRONT, rounding=2);
-      back(4)
-        down(20)
-          cuboid([8, 8, 20], anchor=BOTTOM + FRONT, rounding=2) down(4) left(-2.5) rotate([180, 0, 90]);
+    mount_body();
+
+    // Wire Cutouts
+    wire_cutouts();
+
+    // Bolt Holes
+    for (z_dir = [-1, 1]) {
+      translate([0, arm_length - 2, -bolt_height + z_dir * bolt_spacing / 2])
+        rotate([90, 0, 0])
+          cylinder(h=thickness + 10, d=bolt_diameter, center=true);
     }
 
-    hull() {
-      back(horiz_wire_y)
-        horiz_wire();
-      back(horiz_wire_y)
-        down(mount_height) // Ensure cut is deep enough
-          horiz_wire();
-    }
-
-    hull() {
-      back(vert_wire_y)
-        vert_wire();
-      fwd(vert_wire_y)
-        vert_wire();
-    }
+    // Hook/Clip cutout at the bottom?
+    // Original: back(4) down(20) cuboid([8, 8, 20]...
+    back(4)
+      down(20)
+        cuboid([8, 8, 20], anchor=BOTTOM + FRONT, rounding=2) down(4) left(-2.5) rotate([180, 0, 90]);
   }
 }
 
