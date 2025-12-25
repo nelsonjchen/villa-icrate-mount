@@ -12,7 +12,7 @@ wire_diameter = 4;
 wire_spacing_edge_to_edge = 105;
 wire_center_spacing = wire_spacing_edge_to_edge + wire_diameter;
 
-thickness = 5;
+thickness = 10;
 spread = 120; // Distance between hooks
 height = 60; // How far it hangs down (along Z)
 bottom_width = 40; // Width of the bottom edge
@@ -94,7 +94,7 @@ module icrate_mount() {
 
   // Part with mount
   difference() {
-    down(mount_height - 4)
+    down(mount_height - 6)
       back(arm_length - 2 - thickness / 2)
         cuboid([mount_width, thickness, mount_height], anchor=BOTTOM + FRONT, rounding=2);
 
@@ -110,7 +110,8 @@ module icrate_mount() {
   difference() {
     union() {
       down(4)
-        cuboid([mount_width, arm_length, 8], anchor=BOTTOM + FRONT, rounding=2) down(4) right(-2.5) rotate([180, 0, 90]) text3d("PLA", h=1, anchor=LEFT, size=5);
+        fwd(4)
+          cuboid([mount_width, arm_length + 4, 10], anchor=BOTTOM + FRONT, rounding=2) down(4) right(-2.5) rotate([180, 0, 90]) text3d("PETG", h=1, anchor=LEFT, size=5);
       back(4)
         down(20)
           cuboid([8, 8, 20], anchor=BOTTOM + FRONT, rounding=2) down(4) left(-2.5) rotate([180, 0, 90]);
